@@ -20,6 +20,17 @@ function createMainWindow(){
     mainWindow.loadFile(path.join(__dirname, './renderer/index.html'))
 }
 
+// Create about window
+function createAboutWindow(){
+    const aboutWindow = new BrowserWindow({
+        title: 'About Image Resizer',
+        width: 300,
+        height: 300
+    })
+
+    aboutWindow.loadFile(path.join(__dirname, './renderer/about.html'))
+}
+
 // App is ready
 app.whenReady().then(() => {
     createMainWindow();
@@ -42,20 +53,28 @@ const menu = [
         label: app.name,
         submenu: [
             {
-                label: 'About'
+                label: 'About',
+                click: createAboutWindow
             }
         ]
     }] : []),
         {
-        label: 'File',
-        submenu: [
+            label: 'File',
+            submenu: [
 
-            {
-                label: 'Quit',
-                click: () => app.quit(),
-            }
-    ]
-        }
+                {
+                    label: 'Quit',
+                    click: () => app.quit(),
+                }
+            ]
+        },
+        ...(!isMac ? [{
+            label: 'Help',
+            submenu: [{
+                label: 'About',
+                click: createAboutWindow
+            }]
+        }] : [])
 ]
 
 app.on('window-all-closed', () => {
